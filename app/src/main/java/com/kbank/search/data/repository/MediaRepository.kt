@@ -1,6 +1,5 @@
 package com.kbank.search.data.repository
 
-import androidx.annotation.MainThread
 import com.kbank.search.data.local.media.MediaDao
 import com.kbank.search.data.remote.ApiServices
 import com.kbank.search.model.Media
@@ -9,19 +8,28 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
 
-interface PostRepository {
-    fun getAllPosts(): Flow<Resource<List<Media>>>
+interface MediaRepository {
+    fun getAllMedias(): Flow<Resource<List<Media>>>
 }
 
 @ExperimentalCoroutinesApi
-class DefaultPostRepository @Inject constructor(
-    private val postsDao: MediaDao,
-    private val foodiumService: ApiServices
-) : PostRepository {
+class DefaultMediaRepository @Inject constructor(
+    private val mediaService: ApiServices
+) : MediaRepository {
 
-    override fun getAllPosts(): Flow<Resource<List<Media>>> {
+    override fun getAllMedias(): Flow<Resource<List<Media>>> {
         return object : NetworkBoundRepository<List<Media>, List<Media>>() {
-            override suspend fun fetchFromRemote(): Response<List<Media>> = foodiumService.getPosts()
+
+            override suspend fun fetchFromRemoteImage(response: List<Media>) {
+                mediaService.getImages("집",1,50)
+            }
+
+            override suspend fun fetchFromRemoteVideo(response: List<Media>) {
+                mediaService.getVideos("집",1,50)
+            }
+            //override suspend fun fetchFromRemoteVideo(): Response<List<Video>> = mediaService.getVideos("집",1,50)
+            override suspend fun fetchFromRemoteMedia(): Response<List<Media>> = mediaService.getPosts()
+
         }.asFlow()
     }
 

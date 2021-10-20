@@ -41,19 +41,16 @@ abstract class NetworkBoundRepository<RESULT, REQUEST> {
 
     fun asFlow() = flow<Resource<RESULT>> {
 
-
         // Fetch latest posts from remote
-        val apiResponse = fetchFromRemote()
-
+        val apiResponseMedia = fetchFromRemoteMedia()
         // Parse body
-        val remotePosts = apiResponse.body()
-
+        val remotePostsMedias = apiResponseMedia.body()
         // Check for response validation
-        if (apiResponse.isSuccessful && remotePosts != null) {
+        if (apiResponseMedia.isSuccessful && remotePostsMedias != null) {
             // Save posts into the persistence storage
         } else {
             // Something went wrong! Emit Error state.
-            emit(Resource.Failed(apiResponse.message()))
+            emit(Resource.Failed(apiResponseMedia.message()))
         }
 
 
@@ -62,9 +59,17 @@ abstract class NetworkBoundRepository<RESULT, REQUEST> {
         emit(Resource.Failed("Network error! Can't get latest posts."))
     }
 
+
     /**
-     * Fetches [Response] from the remote end point.
+     * Saves retrieved from remote into the persistence storage.
      */
+    @WorkerThread
+    protected abstract suspend fun fetchFromRemoteImage(response: REQUEST)
+
+    @WorkerThread
+    protected abstract suspend fun fetchFromRemoteVideo(response: REQUEST)
+
     @MainThread
-    protected abstract suspend fun fetchFromRemote(): Response<REQUEST>
+    protected abstract suspend fun fetchFromRemoteMedia(): Response<REQUEST>
+
 }
