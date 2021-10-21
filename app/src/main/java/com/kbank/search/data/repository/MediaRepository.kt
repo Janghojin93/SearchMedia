@@ -20,6 +20,7 @@ class DefaultMediaRepository @Inject constructor(
     override fun getAllMedias(): Flow<Resource<List<Media>>> {
         return object : NetworkBoundRepository<List<Media>, List<Media>>() {
 
+
             override suspend fun fetchFromRemoteImage(response: List<Media>) {
                 mediaService.getImages("집",1,50)
             }
@@ -27,7 +28,7 @@ class DefaultMediaRepository @Inject constructor(
             override suspend fun fetchFromRemoteVideo(response: List<Media>) {
                 mediaService.getVideos("집",1,50)
             }
-            //override suspend fun fetchFromRemoteVideo(): Response<List<Video>> = mediaService.getVideos("집",1,50)
+
             override suspend fun fetchFromRemoteMedia(): Response<List<Media>> = mediaService.getPosts()
 
         }.asFlow()
