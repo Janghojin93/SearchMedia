@@ -9,16 +9,11 @@ import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-/**
- * Network Utility to detect availability or unavailability of Internet connection
- */
+
 object NetworkUtils : ConnectivityManager.NetworkCallback() {
 
     private val networkLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-    /**
-     * Returns instance of [LiveData] which can be observed for network changes.
-     */
     fun getNetworkLiveData(context: Context): LiveData<Boolean> {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

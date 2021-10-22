@@ -15,30 +15,15 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class SaveListFragment : BaseFragment() {
-    private lateinit var binding: FragmentSaveListBinding
-    private lateinit var mRootView: View
-    override val layoutId = R.layout.fragment_save_list
+class SaveListFragment : BaseFragment<FragmentSaveListBinding>(R.layout.fragment_save_list) {
     private val searchViewModel: SearchViewModel by activityViewModels()
 
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        mRootView = binding.root
-
-        // Inflate the layout for this fragment
-        return mRootView
-    }
 
     companion object {
         @JvmStatic
         fun newInstance() = SaveListFragment()
     }
+
+
 
 }

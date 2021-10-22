@@ -45,7 +45,7 @@ abstract class NetworkBoundRepository<RESULT, REQUEST, REQUEST2> {
     fun asFlow() = flow<Resource<List<DocumentImageResponse>>> {
 
         // Fetch latest posts from remote
-        val apiResponseMedia = fetchFromRemoteVideo()
+        val apiResponseMedia = fetchFromRemoteImage()
         // Parse body
         val remotePostsMedias = apiResponseMedia.body()
         // Check for response validation
@@ -55,6 +55,10 @@ abstract class NetworkBoundRepository<RESULT, REQUEST, REQUEST2> {
             // Something went wrong! Emit Error state.
             emit(Resource.Failed(apiResponseMedia.message()))
         }
+
+        emit(
+            Resource.Success(remotePostsMedias!!.documents)
+        )
 
 
     }.catch { e ->

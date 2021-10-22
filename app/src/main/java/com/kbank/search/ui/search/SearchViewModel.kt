@@ -19,7 +19,6 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val mediaRepository: MediaRepository) :
     ViewModel() {
 
-
     private val _posts: MutableStateFlow<State<List<DocumentImageResponse>>> = MutableStateFlow(
         State.loading()
     )
