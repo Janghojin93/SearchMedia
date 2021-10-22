@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kbank.search.databinding.ActivitySearchBinding
 import com.kbank.search.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint
@@ -60,5 +62,9 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>() {
             mViewBinding.pager.currentItem = mViewBinding.pager.currentItem - 1
         }
     }
+
+
+
+
 
 }

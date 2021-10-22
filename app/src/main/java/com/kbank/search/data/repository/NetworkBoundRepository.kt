@@ -26,6 +26,9 @@ package com.kbank.search.data.repository
 
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
+import com.kbank.search.data.remote.model.DocumentImageResponse
+import com.kbank.search.data.remote.model.SearchImageResponse
+import com.kbank.search.data.remote.model.SearchVideoResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
@@ -37,12 +40,12 @@ import retrofit2.Response
  * [REQUEST] represents the type for network.
  */
 @ExperimentalCoroutinesApi
-abstract class NetworkBoundRepository<RESULT, REQUEST> {
+abstract class NetworkBoundRepository<RESULT, REQUEST, REQUEST2> {
 
-    fun asFlow() = flow<Resource<RESULT>> {
+    fun asFlow() = flow<Resource<List<DocumentImageResponse>>> {
 
         // Fetch latest posts from remote
-        val apiResponseMedia = fetchFromRemoteMedia()
+        val apiResponseMedia = fetchFromRemoteVideo()
         // Parse body
         val remotePostsMedias = apiResponseMedia.body()
         // Check for response validation
@@ -60,16 +63,10 @@ abstract class NetworkBoundRepository<RESULT, REQUEST> {
     }
 
 
-    /**
-     * Saves retrieved from remote into the persistence storage.
-     */
     @WorkerThread
-    protected abstract suspend fun fetchFromRemoteImage(response: REQUEST)
+    protected abstract suspend fun fetchFromRemoteImage(): Response<SearchImageResponse>
 
     @WorkerThread
-    protected abstract suspend fun fetchFromRemoteVideo(response: REQUEST)
-
-    @MainThread
-    protected abstract suspend fun fetchFromRemoteMedia(): Response<REQUEST>
+    protected abstract suspend fun fetchFromRemoteVideo(): Response<SearchVideoResponse>
 
 }
